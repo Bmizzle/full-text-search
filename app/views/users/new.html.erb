@@ -1,0 +1,18 @@
+<% title 'Sign Up'%>
+<p>
+	Already register? <%= link_to "Sign In", new_user_session_path%> | Not received activation mail <%= link_to "Click here", resend_activation_users_path%> 
+</p>
+<%= form_for @user, :url => users_path do |f| %>
+  <%= f.error_messages %>
+  <%= render :partial => "form", :object => f %>
+  <p>
+  	<%= f.submit "Sign Up" %>
+  </p>
+<% end %>
+
+<h2>OR</h2>
+<h3>Sign in with</h3>
+<% ["twitter","facebook", "linked_in"].each do |provider| %>
+  <%= link_to image_tag("auth/#{provider}_64.png"), "/auth/#{provider}" %>
+<% end %>
+<%= link_to image_tag("auth/google_64.png"), "/auth/open_id?openid_url=https://www.google.com/accounts/o8/id" %>
