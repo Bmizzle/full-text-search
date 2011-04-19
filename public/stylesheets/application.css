@@ -74,3 +74,25 @@ a {
 .error_messages ul {
   margin: 0;
 }
+
+.hr-line{
+	border-bottom: 1px solid #CDCDCD;
+}
+
+.no-results {
+	padding: 10px;
+	margin-top: 20px;
+	font-size: 18px;
+	color: #000000;
+	background-color: #CC6E6E;
+	text-align: center;
+}
+
+#search-results {
+	margin-top: 10px;	
+}
+
+.pagination {
+	padding: 2px 3px;
+	margin-top: 5px;
+}

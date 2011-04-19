@@ -1,0 +1,44 @@
+<% title 'Search' if params[:search].nil?%>
+<% title 'Search Results' if !params[:search].nil?%>
+
+<div id='search-form'>
+	<%= form_tag search_path, :method => :get do %>
+		<p>
+			<%= text_field_tag :search, params[:search], :style => 'width:350px;' %>&nbsp;&nbsp;<%= submit_tag :search%>
+  		</p>
+	<% end%>
+</div>
+
+<% if !params[:search].blank? && !@claim_mains.empty?%>
+	<div class="hr-line"></div>
+	<%#= debug @highlight%>
+	<div id="search-results">
+		<div style="padding: 2px 3px;margin: 5px 0;text-align:right;">
+			<%=raw page_entries_info @claim_mains, :entry_name => 'results' %>	
+		</div>		
+		<% sr = (@page-1)*10%>
+		<table border='1px' cellpadding='2px' width='100%'>
+			<tr>
+				<td>S.No</td>
+				<td>Last Name</td>
+				<td>First Name</td>
+				<td>City</td>
+				<td>State</td>				
+			</tr>		
+			<% for claim_main in @claim_mains %>
+			<tr>
+				<td><%= sr+=1%></td>
+				<td><%= claim_main.lastname%></td>
+				<td><%= claim_main.firstname%></td>
+				<td><%= claim_main.city%></td>
+				<td><%= claim_main.state%></td>
+			</tr>
+			<% end%>
+		</table>
+		<%= will_paginate @claim_mains %>		
+	</div>
+<% elsif !params[:commit].blank?%>
+	<div class="no-results">
+		Their no results found. Please search with different keywords
+	</div>		
+<% end%>

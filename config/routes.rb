@@ -37,6 +37,9 @@ Socialstock::Application.routes.draw do
   resources :authentications
   match '/auth/:provider/callback' => 'authorizations#create'
   match '/auth/failure' => 'authorizations#failure'
+  
+  match '/search' => 'search#index', :as => 'search'
+  match '/results' => 'search#results', :as => 'results'  
 
   
   # Sample resource route with options:
