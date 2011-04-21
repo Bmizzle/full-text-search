@@ -19,7 +19,7 @@ class AuthorizationsController < ApplicationController
       UserSession.create(@auth.user, true)
     end
     
-    redirect_to user_path(@auth.user.id)
+    redirect_back_or_default(user_path(@auth.user.id))
   end
     
   def failure

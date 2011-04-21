@@ -1,5 +1,7 @@
 class FriendsController < ApplicationController
   
+  before_filter :require_user
+  
   def index
    
     if auth_provider.provider == 'facebook'

@@ -4,14 +4,15 @@
 <div id='search-form'>
 	<%= form_tag search_path, :method => :get do %>
 		<p>
-			<%= text_field_tag :search, params[:search], :style => 'width:350px;' %>&nbsp;&nbsp;<%= submit_tag :search%>
+			<%= text_field_tag :search, (params[:search]||@search_keywords), :style => 'width:350px;' %>&nbsp;&nbsp;<%= submit_tag :search, :id => 'btn_search'%><br>
+			<span style="font-size:11px;"><%= link_to "Advanced search", advance_search_path %></span>
   		</p>
+		<%= hidden_field_tag :search_type, (params[:search_type] || "normal")%>
 	<% end%>
 </div>
 
-<% if !params[:search].blank? && !@claim_mains.empty?%>
-	<div class="hr-line"></div>
-	<%#= debug @highlight%>
+<% if !@claim_mains.empty?%>
+	<div class="hr-line"></div>	
 	<div id="search-results">
 		<div style="padding: 2px 3px;margin: 5px 0;text-align:right;">
 			<%=raw page_entries_info @claim_mains, :entry_name => 'results' %>	
@@ -23,7 +24,8 @@
 				<td>Last Name</td>
 				<td>First Name</td>
 				<td>City</td>
-				<td>State</td>				
+				<td>State</td>
+				<td>View Details</td>				
 			</tr>		
 			<% for claim_main in @claim_mains %>
 			<tr>
@@ -32,13 +34,22 @@
 				<td><%= claim_main.firstname%></td>
 				<td><%= claim_main.city%></td>
 				<td><%= claim_main.state%></td>
+				<td align="center"><%= link_to "View", claim_main_path(claim_main)%></td>
 			</tr>
 			<% end%>
 		</table>
 		<%= will_paginate @claim_mains %>		
-	</div>
+	</div>	
 <% elsif !params[:commit].blank?%>
 	<div class="no-results">
 		Their no results found. Please search with different keywords
 	</div>		
 <% end%>
+
+<script type="text/javascript">
+	$(function(){
+		$('#btn_search').click(function(e){
+			$('#search_type').val('normal')
+		});				
+	})
+</script>

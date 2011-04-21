@@ -1,0 +1,88 @@
+<% title 'Advance search'%>
+
+<div>
+	<%= form_tag search_path, :method=>:get do %>
+		<table cellpadding="2px" cellspacing="3px">
+			<tr>
+				<td>
+					<%= label_tag :lastname %><br />
+					<%= text_field_tag :lastname %>					
+				</td>
+				<td>
+					<%= label_tag :firstname %><br />
+					<%= text_field_tag :firstname %>					
+				</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>
+					<%= label_tag :address1, "Address Line 1" %><br />
+					<%= text_field_tag :address1 %>					
+				</td>
+				<td>
+					<%= label_tag :address2, "Address Line 2" %><br />
+					<%= text_field_tag :address2 %>					
+				</td>
+				<td>
+					<%= label_tag :address3, "Address Line 3" %><br />
+					<%= text_field_tag :address3 %>					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<%= label_tag :city %><br />
+					<%= text_field_tag :city %>					
+				</td>
+				<td>
+					<%= label_tag :state %><br />
+					<%= text_field_tag :state %>
+				</td>
+				<td>
+					<%= label_tag :zip %><br />
+					<%= text_field_tag :zip %>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<%= label_tag :h_firstname, "Holder Name" %><br />
+					<%= text_field_tag :h_firstname %>
+				</td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>
+					<%= label_tag :h_address1, "Holder Address Line 1" %><br />
+					<%= text_field_tag :h_address1 %>					
+				</td>
+				<td>
+					<%= label_tag :h_address2, "Holder Address Line 2" %><br />
+					<%= text_field_tag :h_address2 %>					
+				</td>
+				<td>
+					<%= label_tag :h_address3, "Holder Address Line 3"%><br />
+					<%= text_field_tag :h_address3 %>					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<%= label_tag :h_city, "Holder City" %><br />
+					<%= text_field_tag :h_city %>
+				</td>
+				<td>
+					<%= label_tag :h_state, "Holder State" %><br />
+					<%= text_field_tag :h_state %>
+				</td>
+				<td>
+					<%= label_tag :h_zip, "Holder Zip" %><br />
+					<%= text_field_tag :h_zip %>
+				</td>
+			</tr>
+		</table>
+		<%= hidden_field_tag :search_type, (params[:search_type] || "advance")%>
+		<br>
+		<p>
+			<%= submit_tag "Search"%>
+		</p>
+	<% end%>
+</div>

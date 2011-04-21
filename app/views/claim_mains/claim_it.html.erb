@@ -1,0 +1,15 @@
+<div style="border:1px solid #CCDDFF;padding:10px;">
+	<div id="link">
+		<% link = "https://txcpa.cpa.state.tx.us/up/search.do?how=FriendEmail&last=#{@claim_main.lastname.strip}&first=#{@claim_main.firstname.strip}"%>
+		<%= link_to link, link, {:target => 'blank'}%>
+	</div>
+	<div style="margin-top:5px;">
+		<h4>Please follow the below instructions</h4>
+		<div class="instructions" style="min-height:100px;">
+			
+		</div>
+	</div>
+	<div style="margin-top:5px;">
+		Total money user Claimed : <%= @claim_main.dollars_remitted %>
+	</div>
+</div>

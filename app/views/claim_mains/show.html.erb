@@ -1,0 +1,111 @@
+<% title 'Details'%>
+
+<div>
+	<table border="1px;" cellpadding="2px;">
+		<tr>
+			<td>Last Name </td><td><%= @claim_main.lastname%> </td>
+		</tr>
+		<tr>
+			<td>First Name </td><td><%= @claim_main.firstname%> </td>
+		</tr>
+		<tr>
+			<td>Address 1 </td><td><%= @claim_main.address1%> </td>
+		</tr>
+		<tr>
+			<td>Address 2 </td><td><%= @claim_main.address2%> </td>
+		</tr>
+		<tr>
+			<td>Address 3 </td><td><%= @claim_main.address3%> </td>
+		</tr>
+		<tr>
+			<td>City </td><td><%= @claim_main.city%> </td>
+		</tr>
+		<tr>
+			<td>State </td><td><%= @claim_main.state%> </td>
+		</tr>
+		<tr>
+			<td>Zip Code</td><td><%= @claim_main.zip%> </td>
+		</tr>
+		<tr>
+			<td>Holder Tax ID </td><td><%= @claim_main.tax_id%> </td>
+		</tr>
+		<tr>
+			<td>Holder Division </td><td><%= @claim_main.division%> </td>
+		</tr>
+		<tr>
+			<td>Holder Report Year </td><td><%= @claim_main.h_report_year%> </td>
+		</tr>
+		<tr>
+			<td>Property Type </td><td><%= @claim_main.property_type%> </td>
+		</tr>
+		<tr>
+			<td>Property Sequence</td><td><%= @claim_main.property_seq%> </td>
+		</tr>
+		<tr>
+			<td>Owners Flag </td><td><%= @claim_main.owners_flag%> </td>
+		</tr>
+		<tr>
+			<td>Beginning Transaction Date </td><td><%= @claim_main.last_trans_date%> </td>
+		</tr>
+		<tr>
+			<td>Ending Transaction Date </td><td><%= @claim_main.ending_trans_date%> </td>
+		</tr>
+		<tr>
+			<td>Dollar Amount Remitted </td><td><%= @claim_main.dollars_remitted%> </td>
+		</tr>
+		<tr>
+			<td>Number of Shares Remitted </td><td><%= @claim_main.share_remited%> </td>
+		</tr>
+		<tr>
+			<td>Report Date </td><td><%= @claim_main.report_date%> </td>
+		</tr>
+		<tr>
+			<td>Holder Name </td><td><%= @claim_main.h_firstname%> </td>
+		</tr>
+		<tr>
+			<td>Holder Address Line 1 </td><td><%= @claim_main.h_address1%> </td>
+		</tr>
+		<tr>
+			<td>Holder Address Line 2 </td><td><%= @claim_main.h_address2%> </td>
+		</tr>
+		<tr>
+			<td>Holder Address Line 3 </td><td><%= @claim_main.h_address3%> </td>
+		</tr>
+		<tr>
+			<td>Holder City </td><td><%= @claim_main.h_city%> </td>
+		</tr>
+		<tr>
+			<td>Holder State </td><td><%= @claim_main.h_state%> </td>
+		</tr>
+		<tr>
+			<td>Holder Zip Code </td><td><%= @claim_main.h_zip%> </td>
+		</tr>
+		<tr>
+			<td>Added Date </td><td><%= @claim_main.add_date%> </td>
+		</tr>
+		<tr>
+			<td>Updated Date </td><td><%= @claim_main.update_date%> </td>
+		</tr>
+	</table>	
+</div>
+<div style="text-align:right;border-top: 1px solid;padding: 3px;margin-top: 5px;">
+	<%= link_to "Claim It", '#claim_it', {:id => 'claim_it'}%>&nbsp;|&nbsp;<%= link_to "Email to friend", email_to_friend_claim_main_path(:id=>@claim_main.id)%>
+	<% claim_link = claim_it_claim_main_path(:id=>@claim_main.id)%>
+</div>
+
+<script type="text/javascript">
+	var is_login = '<%= is_user_login%>';
+	$(function(){
+		$('a#claim_it').click(function(e){
+			if(is_login == 'false') {
+				$.fancybox({
+					content: "Please <a href='/user_sessions/new'>Login</a> or <a href='/users/new'>Register</a> to Claim",
+					showCloseButton: false});
+			} else {
+				$.fancybox({					
+					href: "<%= claim_link%>"
+				});
+			}
+		});
+	})
+</script>

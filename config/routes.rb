@@ -32,16 +32,21 @@ Socialstock::Application.routes.draw do
       post 'get_contacts'
     end
   end
-  
-  
-  resources :authentications
+    
+  resources :authentications  
   match '/auth/:provider/callback' => 'authorizations#create'
   match '/auth/failure' => 'authorizations#failure'
   
   match '/search' => 'search#index', :as => 'search'
-  match '/results' => 'search#results', :as => 'results'  
+  match '/results' => 'search#results', :as => 'results'
+  match '/advance_search' => 'search#advance_search', :as => 'advance_search'
 
-  
+  resources :claim_mains do
+    member do
+      get 'claim_it'  
+      get 'email_to_friend'
+    end    
+  end
   # Sample resource route with options:
   #   resources :products do
   #     member do
