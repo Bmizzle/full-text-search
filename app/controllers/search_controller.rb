@@ -1,5 +1,7 @@
 class SearchController < ApplicationController
   
+  layout 'application'
+  
   def index
     @page = (params[:page] || 1).to_i
     @claim_mains = []

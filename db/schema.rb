@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110419043818) do
+ActiveRecord::Schema.define(:version => 20110422055027) do
 
   create_table "authorizations", :force => true do |t|
     t.integer  "user_id"
@@ -18,6 +18,14 @@ ActiveRecord::Schema.define(:version => 20110419043818) do
     t.string   "uid"
     t.string   "token"
     t.string   "secret"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "claim_amounts", :force => true do |t|
+    t.integer  "user_id",                                      :null => false
+    t.decimal  "claim_main_id", :precision => 30, :scale => 0, :null => false
+    t.decimal  "amount",        :precision => 20, :scale => 0, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

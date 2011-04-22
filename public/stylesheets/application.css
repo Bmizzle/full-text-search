@@ -96,3 +96,9 @@ a {
 	padding: 2px 3px;
 	margin-top: 5px;
 }
+
+label.error {
+	margin-left: 5px;
+	font-size: 11px;
+	color: #ED254D;
+}

@@ -47,6 +47,8 @@ Socialstock::Application.routes.draw do
       get 'email_to_friend'
     end    
   end
+  
+  match '/claim_amount' => 'claim_mains#claim', :as => 'claim_amount'
   # Sample resource route with options:
   #   resources :products do
   #     member do

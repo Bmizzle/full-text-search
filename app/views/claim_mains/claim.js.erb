@@ -1,0 +1,9 @@
+var is_claimed = <%= @is_claimed%>;
+
+if(is_claimed) {
+	alert("Already you claimed this amount.")
+} else {
+	alert("The amount is claimed.")
+}
+
+window.location.reload();

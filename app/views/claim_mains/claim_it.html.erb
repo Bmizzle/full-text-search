@@ -10,6 +10,9 @@
 		</div>
 	</div>
 	<div style="margin-top:5px;">
-		Total money user Claimed : <%= @claim_main.dollars_remitted %>
+		Total money user Claimed : $<%= @claim_main.dollars_remitted.to_f %>
+	</div>
+	<div style="text-align:center;">
+		<%= button_to "Claim Amount",  claim_amount_path(:id => @claim_main.id), {:remote=>true}%>
 	</div>
 </div>
