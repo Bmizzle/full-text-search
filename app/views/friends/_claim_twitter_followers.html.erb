@@ -1,0 +1,24 @@
+<div style="padding-top:20px;">
+	<div>
+		<%= link_to 'Get Twitter followers', get_twitter_followers_friends_path(:target_page => target_page)%>
+	</div><br>	
+	<div id='followers'>
+		<h3>Followers List</h3>
+		<table border='1px' cellpadding="2px" cellspacing="3px" width="100%">
+			<tr>
+				<td>Twitter id</td>
+				<td>Name</td>
+				<td>Screen Name</td>
+				<td>Search</td>
+			</tr>
+			<% for follower in followers %>
+			<tr>
+				<td><%= follower.twitter_id%></td>
+				<td><%= follower.name%></td>
+				<td><%= follower.screen_name%></td>
+				<td align="center"><%= link_to "Search", search_path(:lastname=>follower.name, :firstname=>'', :search_type=>"advance", :commit=> "Search")%></td>
+			</tr>
+			<% end%>
+		</table>
+	</div>
+</div>

@@ -7,7 +7,9 @@ class CreateAuthorizations < ActiveRecord::Migration
       t.string :uid
       
       t.string :token 
-      t.string :secret      
+      t.string :secret
+      
+      t.boolean :login, :default => true
       
       t.timestamps
     end

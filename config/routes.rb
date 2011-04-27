@@ -30,6 +30,7 @@ Socialstock::Application.routes.draw do
       get 'get_facebook_status'
       get 'get_twitter_followers'
       post 'get_contacts'
+      get 'user_friends'
     end
   end
     
@@ -44,8 +45,12 @@ Socialstock::Application.routes.draw do
   resources :claim_mains do
     member do
       get 'claim_it'  
-      get 'email_to_friend'
+      get 'email_to_friend'      
     end    
+    collection do 
+      get 'get_friends'
+      get 'search_friends'
+    end
   end
   
   match '/claim_amount' => 'claim_mains#claim', :as => 'claim_amount'
@@ -85,11 +90,11 @@ Socialstock::Application.routes.draw do
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
   # root :to => "welcome#index"
-  root :to => "user_sessions#new"
+  root :to => "search#index"
 
   # See how all your routes lay out with "rake routes"
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.
-  # Note: This route will make all actions in every controller accessible via GET requests.
+  # Note: This route will make all actions in every controller accessible via GET requests.  
   # match ':controller(/:action(/:id(.:format)))'
 end

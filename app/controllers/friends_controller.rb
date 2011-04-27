@@ -2,8 +2,7 @@ class FriendsController < ApplicationController
   
   before_filter :require_user
   
-  def index
-   
+  def index        
     if auth_provider.provider == 'facebook'
       @fb_friends = current_user.facebook_friends
       @fb_status = current_user.facebook_status
@@ -15,35 +14,49 @@ class FriendsController < ApplicationController
     end
   end
   
-  def get_facebook_friends
+  def user_friends
+    provider = (params[:provider] ||= 'facebook')
+    provider = params[:provider] = auth_provider.provider if !auth_provider.nil?
     
-    @fb = current_user.facebook
-    @fb.fetch
-    @fb_status = @fb.feed.first
+    @search_friends = []
+    @names = []
     
-    FacebookStatus.delete_all(:user_id => current_user.id)
+    if provider == 'facebook'
+      @fb_friends = current_user.facebook_friends
+      @fb_friends.each do |fb_friend|
+        @names << fb_friend.name    
+      end
+    elsif provider == 'twitter'
+      @followers = current_user.twitter_followers
+      @followers.each do |follower|
+        @names << follower.name    
+      end
+    elsif provider == 'gmail'||'open_id'
+      @contacts = current_user.contacts
+      @contacts.each do |contact|
+        @names << contact.username if !contact.username.nil?    
+      end
+    end
     
-    FacebookStatus.create({
-      :user_id => current_user.id,
-      :facebook_status_id => @fb_status.identifier,
-      :name => @fb_status.name,
-      :link => @fb_status.link,
-      :caption => @fb_status.caption,
-      :description => @fb_status.description,
-      :source => @fb_status.source,
-      :status_type => @fb_status.type
-    })    
-    
-        
-    @fb_friends = @fb.friends
-    
-    @fb_friends.each do |fb_friend|
-      fb = current_user.facebook_friends.find_by_facebook_uid(fb_friend.identifier)
-      fb.update_attributes({:name => fb_friend.name}) if !fb.nil?
-      fb = FacebookFriend.create({:user_id => current_user.id, :facebook_uid => fb_friend.identifier, :name => fb_friend.name}) if fb.nil?      
-    end   
-        
-    redirect_to friends_path(:source => 'facebook')
+    #search in claim mails
+    @names.each do |name|
+      search = ClaimMain.solr_search do |s|
+        s.keywords(name, {:fields => [:lastname, :firstname]})
+      end
+      
+      if !search.results.empty?
+        @search_friends << name
+      end
+    end
+  end
+  
+  def get_facebook_friends    
+    facebook_friends         
+    if params[:target_page] == 'user_friends'
+      redirect_to user_friends_friends_path(:provider=>'facebook')
+    else
+      redirect_to friends_path(:source => 'facebook')  
+    end    
   end
   
   def get_twitter_followers
@@ -68,7 +81,11 @@ class FriendsController < ApplicationController
       t = TwitterFollower.create({:user_id => current_user.id, :twitter_id => follower.id, :name => follower.name, :screen_name => follower.screen_name}) if t.nil?
     end
     
-    redirect_to friends_path(:source => 'twitter')
+    if params[:target_page] == 'user_friends'
+      redirect_to user_friends_friends_path(:provider=>'twitter')
+    else
+      redirect_to friends_path(:source => 'twitter')  
+    end    
   end
   
   def get_contacts
@@ -81,6 +98,40 @@ class FriendsController < ApplicationController
       Contact.create({:user_id => current_user.id, :source => 'gmail', :username => contact[0], :email => contact[1]})
     end
     
-    redirect_to friends_path(:source => 'open_id')
+    if params[:target_page] == 'user_friends'
+      redirect_to user_friends_friends_path(:provider=>'gmail')
+    else
+      redirect_to friends_path(:source => 'open_id')
+    end
+    
+  end
+  
+  private 
+  
+  def facebook_friends
+    @fb = current_user.facebook
+    @fb.fetch
+    @fb_status = @fb.feed.first
+    
+    FacebookStatus.delete_all(:user_id => current_user.id)
+    
+    FacebookStatus.create({
+      :user_id => current_user.id,
+      :facebook_status_id => @fb_status.identifier,
+      :name => @fb_status.name,
+      :link => @fb_status.link,
+      :caption => @fb_status.caption,
+      :description => @fb_status.description,
+      :source => @fb_status.source,
+      :status_type => @fb_status.type
+    })    
+    
+    @fb_friends = @fb.friends
+    
+    @fb_friends.each do |fb_friend|
+      fb = current_user.facebook_friends.find_by_facebook_uid(fb_friend.identifier)
+      fb.update_attributes({:name => fb_friend.name}) if !fb.nil?
+      fb = FacebookFriend.create({:user_id => current_user.id, :facebook_uid => fb_friend.identifier, :name => fb_friend.name}) if fb.nil?      
+    end
   end
 end

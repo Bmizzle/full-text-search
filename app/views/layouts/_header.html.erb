@@ -1,0 +1,31 @@
+<div id="header">  		
+	<div id="header-logo">
+		<a href="/">ClaimVille</a>
+	</div>
+	<div id="navigation-links">
+		
+		<% if !current_user %>
+			<%= link_to "Sign Up", new_user_path %> |
+			<%= link_to "Sign In", new_user_session_path %>
+		<% else %>
+			<%= link_to "My Account", user_path(current_user) %> |
+			<% if auth_provider.nil? %>
+				<%= link_to "Change Password", change_password_users_path %> |				
+			<% end%>				
+			<%= link_to "Friends", user_friends_friends_path%> |			
+			<%= link_to "Sign out", user_session_path(current_user), :method => :delete, :confirm => "Are you sure you want to signout?" %>
+		<% end %>	
+	</div>	
+	<div class="clear"></div>	
+	<% if show_search%>	
+		<div id="search-form" class="search-box">
+			<%= form_tag search_path, :method => :get do %>
+				<p>
+					<%= text_field_tag :search, (params[:search]||@search_keywords), :style => 'width:350px;' %>&nbsp;&nbsp;<%= submit_tag :search, :id => 'btn_search'%><br>
+					<span style="font-size:11px;"><%= link_to "Advanced search", advance_search_path %></span>
+		  		</p>
+				<%= hidden_field_tag :search_type, (params[:search_type] || "normal")%>
+			<% end%>
+		</div>
+	<% end%>
+</div>

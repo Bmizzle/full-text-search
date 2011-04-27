@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(:version => 20110422055027) do
     t.string   "uid"
     t.string   "token"
     t.string   "secret"
+    t.boolean  "login",      :default => true
     t.datetime "created_at"
     t.datetime "updated_at"
   end

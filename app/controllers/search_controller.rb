@@ -1,6 +1,6 @@
 class SearchController < ApplicationController
   
-  layout 'application'
+  #layout 'application'
   
   def index
     @page = (params[:page] || 1).to_i

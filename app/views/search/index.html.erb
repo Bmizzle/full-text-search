@@ -1,16 +1,37 @@
-<% title 'Search' if params[:search].nil?%>
-<% title 'Search Results' if !params[:search].nil?%>
+<% title('Search',false)%>
 
-<div id='search-form'>
+<style type="text/css">
+	.search-form-before {
+		padding:10px;
+		margin-top:100px;
+	}
+	
+	.search-form-before form {
+		margin: 0 auto;		
+		width: 50%;
+	}
+	
+	.search-form-after {
+		
+	}
+</style>
+
+<% search_style = (params[:commit] ? "search-form-after" : "search-form-before")%>
+<% if params[:commit] == "search" %>
+	<div id="addthis" class="addthis-widget" style="float:right;">	
+		<%= render(:partial => "layouts/addthis_widget")%>
+	</div>
+<% end%>
+<div id='search-form-body' class="<%= search_style%>">
 	<%= form_tag search_path, :method => :get do %>
 		<p>
-			<%= text_field_tag :search, (params[:search]||@search_keywords), :style => 'width:350px;' %>&nbsp;&nbsp;<%= submit_tag :search, :id => 'btn_search'%><br>
+			<%= text_field_tag :search, (params[:search]||@search_keywords), :style => 'width:450px;' %>&nbsp;&nbsp;<%= submit_tag :search, :id => 'btn_search'%><br>
 			<span style="font-size:11px;"><%= link_to "Advanced search", advance_search_path %></span>
   		</p>
 		<%= hidden_field_tag :search_type, (params[:search_type] || "normal")%>
 	<% end%>
 </div>
-
+<div class="clear"></div>
 <% if !@claim_mains.empty?%>
 	<div class="hr-line"></div>	
 	<div id="search-results">

@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   
   attr_accessible :login, :email, :password, :password_confirmation
   
-  has_one :authorization, :dependent => :destroy
+  has_many :authorization, :dependent => :destroy
   
   has_many :facebook_friends
   has_one :facebook_status
@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
   
   has_many :contacts
   
-  has_many :claim_amounts
+  has_many :claim_amounts  
   
   acts_as_authentic do |c|
     c.merge_validates_length_of_password_field_options({:minimum => 6})
@@ -83,13 +83,14 @@ class User < ActiveRecord::Base
     user
   end
   
-  def facebook          
-    @fb_user ||= FbGraph::User.me(self.authorization.token)
+  def facebook  
+    provider = self.authorization.find_by_provider('facebook')
+    @fb_user ||= FbGraph::User.me(provider.token)
   end
   
   def twitter
     unless @twitter_user
-      provider = self.authorization
+      provider = self.authorization.find_by_provider('twitter')
       @twitter_user = Twitter::Client.new(:oauth_token => provider.token, :oauth_token_secret => provider.secret) rescue nil
     end
     @twitter_user

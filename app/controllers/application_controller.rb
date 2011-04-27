@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
   
   def auth_provider
     return @auth_provider if defined?(@auth_provider)
-    @auth_provider = current_user.authorization
+    @auth_provider = current_user.authorization.find_by_login(true)
   end
     
   def require_user
@@ -46,8 +46,8 @@ class ApplicationController < ActionController::Base
     end
   end
     
-  def store_location
-    session[:return_to] = request.request_uri
+  def store_location(location = nil)
+    session[:return_to] = request.request_uri||location
   end
     
   def redirect_back_or_default(default)

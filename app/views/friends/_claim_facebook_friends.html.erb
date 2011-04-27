@@ -1,0 +1,19 @@
+<div style="padding-top:20px;">
+	<div style="text-align:right;margin-bottom:15px;">
+		<%= link_to 'Get Facebook friends', get_facebook_friends_friends_path(:target_page => target_page), {:title => "Click here to get facebook friends"} %>
+	</div>
+	<div>		
+		<table border='1px' cellpadding="2px" cellspacing="3px" width="100%">
+			<tr>				
+				<td>Name</td>
+				<td>View Results</td>
+			</tr>
+			<% for fb_friend in fb_friends %>
+			<tr>				
+				<td><%= fb_friend.name%></td>
+				<td align="center"><%= link_to "View Results", search_path(:lastname=>fb_friend.name, :search_type=>"advance", :commit=> "search")%></td>
+			</tr>
+			<% end%>
+		</table>
+	</div>
+</div>

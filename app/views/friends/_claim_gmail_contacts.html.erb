@@ -1,0 +1,41 @@
+<div style="margin-top:10px;">
+	<fieldset>
+		<%= form_tag get_contacts_friends_path, :id=>'gmail_login_form', :method => :post do%>
+			<p>
+				<%= label_tag :username %><br />
+				<%= text_field_tag :username, '', {:class => "required email"} %>
+  			</p>
+			<p>
+				<%= label_tag :password %><br />
+				<%= password_field_tag :password, '', {:class => "required"} %>
+  			</p>
+			<%= hidden_field_tag :target_page, target_page%>
+			<P>
+				<%= submit_tag "Get Contacts"%>
+			</P>
+		<% end%>
+	</fieldset>
+</div>
+<div>
+	<h3>Contacts List</h3>	
+	<table border='1px' cellpadding='2px' cellspacing="3px" width="100%">
+		<tr>			
+			<td>Name</td>
+			<td>Email</td>
+			<td>Search</td>
+		</tr>
+		<% for contact in contacts %>
+		<tr>			
+			<td><%= contact.username%></td>
+			<td><%= contact.email%></td>
+			<td align="center"><%= link_to "Search", search_path(:lastname=>contact.username, :firstname=>'', :search_type=>"advance", :commit=> "Search")%></td>
+		</tr>
+		<% end%>
+	</table>
+</div>
+
+<script type="text/javascript">
+	$(function(){
+		$("#gmail_login_form").validate();
+	})	
+</script>
