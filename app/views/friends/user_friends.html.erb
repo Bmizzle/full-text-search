@@ -3,36 +3,23 @@
 
 <% provider = params[:provider]%>
 
-<div id="get-social-friends">
-	<% if auth_provider.nil?%>
+<div id="get-social-friends">	
 	<div style="margin-bottom:5px;">
 		<%= link_to "Friends on Facebook", user_friends_friends_path(:provider=>"facebook"), {:id => "get_link_ff", :class=>"get-link"}%> |		
 		<%= link_to "Followers on Twitter", user_friends_friends_path(:provider=>"twitter"), {:id => "get_link_tf", :class=>"get-link"}%> | 
 		<%= link_to "Contacts in Gmail", user_friends_friends_path(:provider=>"gmail"), {:id => "get_link_gc", :class=>"get-link"}%>
-	</div>
-	<% end%>	
+	</div>	
 	
 	<% if provider == "facebook"%>
-	<div id="div_ff">
-		<% if current_user.authorization.find_by_provider('facebook').nil? %>				
-			<%= link_to "Get Facebook authorization", "/auth/facebook"%>				
-		<% else%>
-			<%= link_to 'Get Facebook friends', get_facebook_friends_friends_path(:target_page => "user_friends"), {:title => "Click here to get facebook friends"} %>
-		<% end%>			
-	</div>	
+		<div id="div_ff">		
+			<%= link_to 'Search Facebook friends', get_facebook_friends_friends_path(:target_page => "user_friends"), {:title => "Click here to get facebook friends"} %>
+		</div>		
 	<% elsif provider == "twitter" %>
-	<div id="div_tf">
-		<% if current_user.authorization.find_by_provider('twitter').nil? %>
-			<%= link_to "Get Twitter authorization", "/auth/twitter"%>	    
-		<% else%>
-			<%= link_to 'Get Twitter followers', get_twitter_followers_friends_path(:target_page => "user_friends")%>
-		<% end%>
-	</div>
-	<% elsif provider == "gmail" || "open_id"%>
-	<div id="div_gc">
-		<% if current_user.authorization.find_by_provider('open_id').nil? %>
-			<%= link_to "Get Gmail authorization", "/auth/open_id?openid_url=https://www.google.com/accounts/o8/id"%>
-		<% else%>
+		<div id="div_tf">
+			<%= link_to 'Search Twitter followers', get_twitter_followers_friends_path(:target_page => "user_friends")%>		
+		</div>	
+	<% elsif provider == "gmail"%>
+		<div id="div_gc">
 			<div style="margin-top:10px;">
 				<fieldset>
 					<%= form_tag get_contacts_friends_path, :id=>'gmail_login_form', :method => :post do%>
@@ -46,29 +33,34 @@
 			  			</p>
 						<%= hidden_field_tag :target_page, "user_friends"%>
 						<P>
-							<%= submit_tag "Get Contacts"%>
+							<%= submit_tag "Search Gmail Contacts"%>
 						</P>
 					<% end%>
 				</fieldset>
 			</div>
-		<% end%>
-	</div>
+		</div>	
 	<% end%>		
 	
-	<div style="margin-top:5px;">
-		<table border='1px' cellpadding="3px" cellspacing="3px">
-			<tr>				
-				<td>Name</td>
-				<td>View Results</td>
-			</tr>
-			<% for search_friend in @search_friends %>
-			<tr>				
-				<td><%= search_friend%></td>
-				<td align="center"><%= link_to "View Results", search_path(:search=>search_friend, :search_type=>"normal", :commit=> "search")%></td>
-			</tr>
-			<% end%>
-		</table>
-	</div>	
+	<% if @search_friends.empty? %>
+		<div style="text-align:center;padding:10px;margin-top:20px;">
+			Click on "Friends on Facebook/Followers on Twitter/Contacts in Gmail" to search your friends here.
+		</div>	
+	<% else%>
+		<div style="margin-top:5px;">
+			<table border='1px' cellpadding="3px" cellspacing="3px">
+				<tr>
+					<td class="table-header">Name</td>
+					<td class="table-header">View Results</td>
+				</tr>
+				<% for search_friend in @search_friends %>
+				<tr>				
+					<td><%= search_friend[:name]%></td>
+					<td align="center"><%= link_to "View Results", search_path(:search=>search_friend[:name], :search_type=>"normal", :commit=> "search", :provider=>search_friend[:provider], :uid=>search_friend[:uid])%></td>
+				</tr>
+				<% end%>
+			</table>
+		</div>
+	<% end%>	
 </div>
 
 <script type="text/javascript">
