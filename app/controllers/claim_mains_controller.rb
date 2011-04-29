@@ -1,17 +1,13 @@
 class ClaimMainsController < ApplicationController
   
-  before_filter :require_user, :only => ['claim_it', 'email_to_friend']
+  before_filter :require_user, :only => ['claim_it', 'email_to_friend', 'send_to_facebook', 'send_to_twitter']
   
   def show
     @id = params[:id]
     @claim_main = ClaimMain.where({:id=>@id}).first
     
-    @claim_amount = ClaimAmount.find(:first, :conditions => {:user_id => current_user.id, :claim_main_id => @claim_main.id}) if current_user
-    
-    if !@claim_amount.nil?
-      #flash[:alert] = "This amount is already claimed."
-    end
-    
+    @claim_amount = ClaimAmount.find(:first, :conditions => {:claim_main_id => @claim_main.id}) if current_user   
+        
     if @claim_main.nil?      
       redirect_to("/404.html")
     end
@@ -26,13 +22,27 @@ class ClaimMainsController < ApplicationController
   
   def claim
     id = params[:id]   
+    tracker_user_id = params[:tracker_user_id]
     @claim_main = ClaimMain.find(id)
-    @claim_amount = ClaimAmount.find(:first, :conditions=> {:user_id => current_user.id, :claim_main_id => @claim_main.id})
+    @claim_amount = ClaimAmount.find(:first, :conditions=> {:claim_main_id => @claim_main.id})
     if !@claim_amount.nil?
       @is_claimed = true      
     else
-      ClaimAmount.create({:user_id => current_user.id, :claim_main_id => @claim_main.id, :amount => @claim_main.dollars_remitted})
+      ClaimAmount.create({:user_id => current_user.id, :claim_main_id => @claim_main.id, :amount => @claim_main.dollars_remitted, :tracker_user_id => tracker_user_id})
       @is_claimed = false
+      
+      #check facebook
+      if !auth_provider.nil? && auth_provider.provider == "facebook"
+        @fb = current_user.facebook
+        @fb.feed!(
+          :message => "I found $#{@claim_main.dollars_remitted.to_f} on ClaimVille.com. Find you missing money",
+          :link => 'http://www.claimville.com',
+          :name => 'ClaimVille'
+        )       
+      elsif !auth_provider.nil? && auth_provider.provider == "twitter"
+        @t = current_user.twitter
+        @t.update("I found $#{@claim_main.dollars_remitted.to_f} on ClaimVille.com. Find you missing money Via @ClaimVille")
+      end
     end
     
     respond_to do |format|
@@ -43,7 +53,7 @@ class ClaimMainsController < ApplicationController
   def email_to_friend    
     if params[:commit] == 'Send'
       claim_main = ClaimMain.find(params[:id])
-      claim = {:email => params[:email], :amount => claim_main.dollars_remitted, :user_id=>current_user.id, :claim_url=>claim_main_path(:id=>claim_main.id, :user_id=>current_user.id)}
+      claim = {:email => params[:email], :amount => claim_main.dollars_remitted, :user_id=>current_user.id, :claim_url=>claim_main_url(:id=>claim_main.id, :tracker_user_id=>current_user.id)}
       if ENV['RAILS_ENV'] == "development"
         friendmail = Notifier.email_to_friend(claim)
         logger.debug friendmail
@@ -57,43 +67,68 @@ class ClaimMainsController < ApplicationController
     end
   end
   
-  def search_friends
+  def send_to_facebook
     
-    @search_friends = []
-    @names = []
-    #facebook friends
-    @fb_friends = current_user.facebook_friends  
-    @fb_friends.each do |fb_friend|
-      @names << fb_friend.name    
+    id = params[:id]
+    uid = params[:uid]
+    tracker_user_id = current_user.id
+    name = params[:name] 
+    
+    url = claim_main_url(:id=>id, :tracker_user_id=>current_user.id, :uid=>uid, :provider => 'facebook')
+    
+    claim_main = ClaimMain.find(id)   
+    
+    #check amount is claim or not   
+    claim_amount = ClaimAmount.where(:claim_main_id => id, :user_id => current_user.id).first
+    if !claim_amount.nil?
+      title = "I found $#{claim_main.dollars_remitted.to_f} on ClaimVille.com. Find you missing money"
+    else
+      title = "I found $#{claim_main.dollars_remitted.to_f} on ClaimVille.com for #{name} check it out #{url}"
     end
-    
-    #twitter followrs
-    @followers = current_user.twitter_followers
-    @followers.each do |follower|
-      @names << follower.name
-    end
-    
-    #gmail contacts
-    @contacts = current_user.contacts
-    @contacts.each do |contact|
-      @names << contact.username if !contact.username.nil?
-    end
-    
-    #search in claim mails
-    @names.each do |name|
-      search = ClaimMain.solr_search do |s|
-        s.keywords(name, {:fields => [:lastname, :firstname]})
-      end
-      
-      search.results.each do |result|
-        @search_friends << result
-      end    
-    end
-    
+        
+    facebook = current_user.authorization.find_by_provider('facebook') 
+    if facebook.nil?
+        store_location
+        redirect_to "/auth/facebook"
+    else
+      @fb = FbGraph::User.me(facebook.token)
+      if uid.nil?
+        @fb.feed!(:message => title, :link => 'http://www.claimville.com', :name => 'ClaimVille')
+      else
+        @fb.feed!(:message => title, :link => 'http://www.claimville.com', :name => 'ClaimVille')      
+      end      
+      redirect_to :back
+    end        
   end
   
-  def get_friends
+  def send_to_twitter
+    id = params[:id]
+    screen_name= params[:screen_name]
+    tracker_user_id = current_user.id
+    name = params[:name]
     
-    redirect_to search_friends_claim_mains_path
+    url = claim_main_url(:id=>id, :tracker_user_id=>current_user.id, :screen_name=>screen_name, :provider => 'twitter')
+    
+    claim_main = ClaimMain.find(id)   
+    
+    #check amount is claim or not   
+    claim_amount = ClaimAmount.where(:claim_main_id => id, :user_id => current_user.id).first
+    if !claim_amount.nil?
+      title = "I found $#{claim_main.dollars_remitted.to_f} on ClaimVille.com. Find you missing money"
+    else
+      title = "I found $#{claim_main.dollars_remitted.to_f} on ClaimVille.com for @#{screen_name} check it out #{url}" if !screen_name.nil?
+      title = "I found $#{claim_main.dollars_remitted.to_f} on ClaimVille.com for #{name} check it out #{url}" if screen_name.nil?
+    end
+    
+    twitter = current_user.authorization.find_by_provider('twitter') 
+    if twitter.nil?
+        store_location
+        redirect_to "/auth/twitter"
+    else
+            
+      redirect_to "http://twitter.com/?status=#{title}"
+    end
+    
+    
   end
 end

@@ -148,3 +148,8 @@ label.error {
 	margin: 5px;
     padding: 5px;
 }
+
+.table-header {
+	text-align:center;
+	font-weight: bold;
+}

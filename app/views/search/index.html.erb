@@ -19,7 +19,12 @@
 <% search_style = (params[:commit] ? "search-form-after" : "search-form-before")%>
 <% if params[:commit] == "search" %>
 	<div id="addthis" class="addthis-widget" style="float:right;">	
-		<%= render(:partial => "layouts/addthis_widget")%>
+		<%= render(:partial => "layouts/addthis_widget", :locals => {:title => "ClaimVille", :description=>"Via ClaimVille"})%>
+		<script type="text/javascript">
+			var addthis_share = {
+  				templates: { twitter: 'check out {{title}} @ {{url}}' }
+			}
+		</script>
 	</div>
 <% end%>
 <div id='search-form-body' class="<%= search_style%>">
@@ -38,24 +43,21 @@
 		<div style="padding: 2px 3px;margin: 5px 0;text-align:right;">
 			<%=raw page_entries_info @claim_mains, :entry_name => 'results' %>	
 		</div>		
-		<% sr = (@page-1)*10%>
 		<table border='1px' cellpadding='2px' width='100%'>
-			<tr>
-				<td>S.No</td>
-				<td>Last Name</td>
-				<td>First Name</td>
-				<td>City</td>
-				<td>State</td>
-				<td>View Details</td>				
+			<tr>				
+				<td class="table-header">Last Name</td>
+				<td class="table-header">First Name</td>
+				<td class="table-header">City</td>
+				<td class="table-header">State</td>
+				<td class="table-header">View Details</td>				
 			</tr>		
 			<% for claim_main in @claim_mains %>
-			<tr>
-				<td><%= sr+=1%></td>
+			<tr>				
 				<td><%= claim_main.lastname%></td>
 				<td><%= claim_main.firstname%></td>
 				<td><%= claim_main.city%></td>
 				<td><%= claim_main.state%></td>
-				<td align="center"><%= link_to "View", claim_main_path(claim_main)%></td>
+				<td align="center"><%= link_to "View", claim_main_path(:id=>claim_main.id, :provider=>params[:provider], :uid => params[:uid])%></td>
 			</tr>
 			<% end%>
 		</table>

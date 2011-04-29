@@ -13,6 +13,9 @@
 		Total money user Claimed : $<%= @claim_main.dollars_remitted.to_f %>
 	</div>
 	<div style="text-align:center;">
-		<%= button_to "Claim Amount",  claim_amount_path(:id => @claim_main.id), {:remote=>true}%>
+		<%= form_tag(claim_amount_path(:id => @claim_main.id), :remote => true) do %>
+			<%= hidden_field_tag :tracker_user_id, params[:tracker_user_id]%>
+			<%= submit_tag "Claim Amount"%>
+		<% end%>		
 	</div>
 </div>

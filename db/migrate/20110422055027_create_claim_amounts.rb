@@ -6,6 +6,8 @@ class CreateClaimAmounts < ActiveRecord::Migration
       t.decimal :claim_main_id, :null => false, :precision => 30
       
       t.decimal :amount, :null => false, :precision => 20
+      
+      t.integer :tracker_user_id
 
       t.timestamps
     end

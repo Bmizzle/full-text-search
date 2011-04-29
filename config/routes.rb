@@ -45,12 +45,10 @@ Socialstock::Application.routes.draw do
   resources :claim_mains do
     member do
       get 'claim_it'  
-      get 'email_to_friend'      
+      get 'email_to_friend'
+      get 'send_to_facebook'
+      get 'send_to_twitter'
     end    
-    collection do 
-      get 'get_friends'
-      get 'search_friends'
-    end
   end
   
   match '/claim_amount' => 'claim_mains#claim', :as => 'claim_amount'

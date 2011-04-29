@@ -13,8 +13,9 @@
   	<%= render :partial => "layouts/header", :locals => {:show_search => true} %>
     <div id="container">    	
 		<% if current_user%>
-			<div style="float:right;border:1px solid #000000;padding:10px;background-color:#CDD;">					
-				<%=raw "You claimed <b>$#{totalclaimed.to_f}</b> -- till now"%>
+			<div style="float:right;border:1px solid #000000;padding:10px;background-color:#CDD;text-align:right;">					
+				<%=raw "You claimed <b>$#{totalclaimed.to_f}</b> -- till now"%><br>
+				<%=raw "You found <b>$#{total_found_amount.to_f}</b> -- for your friends till now"%>
 			</div>
 		<% end%>
       <% flash.each do |name, msg| %>

@@ -24,9 +24,10 @@ ActiveRecord::Schema.define(:version => 20110422055027) do
   end
 
   create_table "claim_amounts", :force => true do |t|
-    t.integer  "user_id",                                      :null => false
-    t.decimal  "claim_main_id", :precision => 30, :scale => 0, :null => false
-    t.decimal  "amount",        :precision => 20, :scale => 0, :null => false
+    t.integer  "user_id",                                        :null => false
+    t.decimal  "claim_main_id",   :precision => 30, :scale => 0, :null => false
+    t.decimal  "amount",          :precision => 20, :scale => 0, :null => false
+    t.integer  "tracker_user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

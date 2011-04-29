@@ -4,11 +4,22 @@
 	.tb-bold {
 		font-weight: bold;
 	}
+	
+	.fancybox-text {
+		font-size: 24px;
+		padding: 10px;
+	}
 </style>
 
+<% title = "Details of #{@claim_main.lastname}"%>
+<% title = "I found $#{@claim_main.dollars_remitted.to_f} on ClaimVille.com. Find you missing money" if !@claim_amount.nil? && @claim_amount.user_id == current_user.id%>
+<% title = "I found $#{@claim_main.dollars_remitted.to_f} on ClaimVille.com for #{@claim_main.lastname}" if @claim_amount.nil?%>
+
 <div id="addthis" class="addthis-widget">	
-	<%= render(:partial => "layouts/addthis_widget")%>
+	<%= render(:partial => "layouts/addthis_widget", :locals=>{:title=>title, :description => ""})%>	
 </div>
+
+<% tracker_user_id=params[:tracker_user_id]%>
 <div style="float:left;">
 	<% if !@claim_amount.nil?%>
 		<div style="padding:10px;border: 1px solid #000000;margin-bottom:10px;background-color: #FCC;">This amount is already claimed.</div>
@@ -100,10 +111,15 @@
 		</tr>
 	</table>	
 </div>
-<div style="float:right;text-align:center;font-size:2em;font-weight:bold;">
+<div style="float:right;text-align:center;font-size:2em;font-weight:bold;">	
 	<div style="position:relative;top:100px;left:-150px;">
-		<%= link_to "Claim It", '#container', {:id => 'claim_it', :style=>"text-decoration:none;"}%><br><br><%= link_to "Email to friend", email_to_friend_claim_main_path(:id=>@claim_main.id),{:style=>"text-decoration:none;"}%>
-		<% claim_link = claim_it_claim_main_path(:id=>@claim_main.id)%>
+		<%= link_to "Claim It", '#container', {:id => 'claim_it', :style=>"text-decoration:none;"}%><br><br>
+		<%= link_to "Email to friend", email_to_friend_claim_main_path(:id=>@claim_main.id),{:style=>"text-decoration:none;"}%><br><br>
+		<%= link_to "Share on Facebook", send_to_facebook_claim_main_path(:id => @claim_main.id, :uid=> params['uid'], :name => @claim_main.lastname.strip + ' ' + @claim_main.firstname.strip), {:style=>"text-decoration:none;"}%><br><br>
+		<%= link_to "Share on Twitter", send_to_twitter_claim_main_path(:id => @claim_main.id, :screen_name=> params['screen_name'], :name => @claim_main.lastname.strip + ' ' + @claim_main.firstname.strip), {:style=>"text-decoration:none;"}%>
+		
+		<% claim_link = claim_it_claim_main_path(:id=>@claim_main.id, :tracker_user_id => tracker_user_id)%>
+		
 	</div>	
 </div>
 <div class="clear"></div>
@@ -116,7 +132,7 @@
 			if(is_claimed == 'true') {
 				$('a#claim_it').attr('title', 'This amount is already claimed.');
 				$.fancybox({
-					content: 'This amount is already claimed',
+					content: '<div class="fancybox-text">This amount is already claimed</div>',
 					showCloseButton: false
 				});
 				e.preventDefault();
@@ -124,14 +140,17 @@
 			}
 			if(is_login == 'false') {
 				$.fancybox({
-					content: "Please <a href='/user_sessions/new'>Login</a> or <a href='/users/new'>Register</a> to Claim",
+					content: '<div class="fancybox-text">Please <a href="/user_sessions/new">Login</a> or <a href="/users/new">Register</a> to Claim</div>',
 					showCloseButton: false});
 			} else {
 				$.fancybox({					
 					href: "<%= claim_link%>"
 				});
 			}
-		});		
-		
-	})
+		});			
+	});
+	
+	var addthis_share = {
+		templates: { twitter: "Check out {{title}} @ {{url}} via @ClaimVille" }
+	};	
 </script>

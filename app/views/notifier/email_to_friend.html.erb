@@ -1,6 +1,6 @@
 <div>
-	we send an email to friend that he found you $<%= @amount.to_f%> of unclaimed property for you. 
+	we send an email to friend that he found you $<%= @claim[:amount].to_f%> of unclaimed property for you. 
 	<br>
 	Click below link to claim the amount<br>
-	<%= @claim_url%>
+	<%= @claim[:claim_url]%>
 </div>

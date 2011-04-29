@@ -1,10 +1,14 @@
 class ApplicationController < ActionController::Base  
   protect_from_forgery
   helper :all
-  helper_method :current_user_session, :current_user, :auth_provider, :is_user_login, :totalclaimed
+  helper_method :current_user_session, :current_user, :auth_provider, :is_user_login, :totalclaimed, :total_found_amount
   
   def totalclaimed
     ClaimAmount.where(:user_id => current_user.id).sum(:amount)
+  end
+  
+  def total_found_amount
+    ClaimAmount.where(:tracker_user_id => current_user.id).sum(:amount)
   end
   
   private

@@ -21,8 +21,8 @@ class Notifier < ActionMailer::Base
          :subject => "Password Reset Instructions") 
   end
   
-  def email_to_friend(claim)
-    @amount = claim[:amount]
+  def email_to_friend(claim)    
+    @claim = claim
     mail(:to => claim[:email], :subject => 'From Claimvilla')
   end
 end
