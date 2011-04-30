@@ -43,13 +43,13 @@
 		<div style="padding: 2px 3px;margin: 5px 0;text-align:right;">
 			<%=raw page_entries_info @claim_mains, :entry_name => 'results' %>	
 		</div>		
-		<table border='1px' cellpadding='2px' width='100%'>
-			<tr>				
-				<td class="table-header">Last Name</td>
-				<td class="table-header">First Name</td>
-				<td class="table-header">City</td>
-				<td class="table-header">State</td>
-				<td class="table-header">View Details</td>				
+		<table class="search-results" cellpadding="5px;">
+			<tr class="table-header">				
+				<td>Last Name</td>
+				<td>First Name</td>
+				<td>City</td>
+				<td>State</td>
+				<td>View Details</td>				
 			</tr>		
 			<% for claim_main in @claim_mains %>
 			<tr>				
