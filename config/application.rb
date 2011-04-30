@@ -46,8 +46,8 @@ module Socialstock
       :address              => "smtp.gmail.com",
       :port                 => 587,
       :domain               => 'startupsourcing.com',
-      :user_name            => 'prasanna548',
-      :password             => 'prasanna',
+      :user_name            => 'claimville@gmail.com',
+      :password             => 'One1dollar',
       :authentication       => 'plain',
       :enable_starttls_auto => true  
     } 
