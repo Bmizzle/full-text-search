@@ -2,8 +2,7 @@
 	<div id="header-logo">
 		<a href="/">ClaimVille</a>
 	</div>
-	<div id="navigation-links">
-		
+	<div id="navigation-links">		
 		<% if !current_user %>
 			<%= link_to "Sign Up", new_user_path %> |
 			<%= link_to "Sign In", new_user_session_path %>

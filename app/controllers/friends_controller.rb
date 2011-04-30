@@ -40,7 +40,7 @@ class FriendsController < ApplicationController
      
       @followers = current_user.twitter_followers
       @followers.each do |follower|
-        @names << {:name=>follower.name, :uid=>follower.screen_name, :provider=>"twitter"}   
+        @names << {:name=>follower.name, :screen_name=>follower.screen_name, :provider=>"twitter"}   
       end
       
     elsif provider == 'gmail'

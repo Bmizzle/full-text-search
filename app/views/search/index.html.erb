@@ -57,11 +57,13 @@
 				<td><%= claim_main.firstname%></td>
 				<td><%= claim_main.city%></td>
 				<td><%= claim_main.state%></td>
-				<td align="center"><%= link_to "View", claim_main_path(:id=>claim_main.id, :provider=>params[:provider], :uid => params[:uid])%></td>
+				<td align="center"><%= link_to "View", claim_main_path(:id=>claim_main.id, :provider=>params[:provider], :uid => params[:uid], :screen_name => params[:screen_name], :tracker_user_id => (current_user||'') )%></td>
 			</tr>
 			<% end%>
 		</table>
-		<%= will_paginate @claim_mains %>		
+		<div class="paginate-wrapper">
+			<%= will_paginate @claim_mains %>
+		</div>		
 	</div>	
 <% elsif !params[:commit].blank?%>
 	<div class="no-results">

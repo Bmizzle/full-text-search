@@ -16,18 +16,36 @@ class ClaimMainsController < ApplicationController
   end
   
   def claim_it
-    @claim_main = ClaimMain.where({:id=>params[:id]}).first    
+    @claim_main = ClaimMain.where({:id=>params[:id]}).first
+    
+    @provider = params[:provider]
+    @screen_name = params[:screen_name]    
+    @uid = params[:uid]
+    @is_right_user = true
+    
+    #is_right_user
+    if @provider == 'twitter'
+      twitter = TwitterFollower.where(:screen_name => @screen_name).first
+      @is_right_user = false if auth_provider.nil?
+      @is_right_user = false if (!auth_provider.nil? && auth_provider.uid != twitter.twitter_id)
+    elsif @provider == 'facebook'
+      @is_right_user = false if auth_provider.nil?
+      @is_right_user = false if (!auth_provider.nil? && auth_provider.uid != @uid)
+    end
+    
     render :layout => false        
   end
   
   def claim
     id = params[:id]   
-    tracker_user_id = params[:tracker_user_id]
+    tracker_user_id = nil
+    tracker_user_id = params[:tracker_user_id] if(current_user.id.to_s != params[:tracker_user_id]) 
+    
     @claim_main = ClaimMain.find(id)
     @claim_amount = ClaimAmount.find(:first, :conditions=> {:claim_main_id => @claim_main.id})
     if !@claim_amount.nil?
       @is_claimed = true      
-    else
+    else      
       ClaimAmount.create({:user_id => current_user.id, :claim_main_id => @claim_main.id, :amount => @claim_main.dollars_remitted, :tracker_user_id => tracker_user_id})
       @is_claimed = false
       
@@ -95,40 +113,9 @@ class ClaimMainsController < ApplicationController
       if uid.nil?
         @fb.feed!(:message => title, :link => 'http://www.claimville.com', :name => 'ClaimVille')
       else
-        @fb.feed!(:message => title, :link => 'http://www.claimville.com', :name => 'ClaimVille')      
+        @fb.feed!(:message => title, :link => 'http://www.claimville.com', :name => 'ClaimVille', :to => [{:id => uid.to_s, :name => name}])      
       end      
       redirect_to :back
     end        
-  end
-  
-  def send_to_twitter
-    id = params[:id]
-    screen_name= params[:screen_name]
-    tracker_user_id = current_user.id
-    name = params[:name]
-    
-    url = claim_main_url(:id=>id, :tracker_user_id=>current_user.id, :screen_name=>screen_name, :provider => 'twitter')
-    
-    claim_main = ClaimMain.find(id)   
-    
-    #check amount is claim or not   
-    claim_amount = ClaimAmount.where(:claim_main_id => id, :user_id => current_user.id).first
-    if !claim_amount.nil?
-      title = "I found $#{claim_main.dollars_remitted.to_f} on ClaimVille.com. Find you missing money"
-    else
-      title = "I found $#{claim_main.dollars_remitted.to_f} on ClaimVille.com for @#{screen_name} check it out #{url}" if !screen_name.nil?
-      title = "I found $#{claim_main.dollars_remitted.to_f} on ClaimVille.com for #{name} check it out #{url}" if screen_name.nil?
-    end
-    
-    twitter = current_user.authorization.find_by_provider('twitter') 
-    if twitter.nil?
-        store_location
-        redirect_to "/auth/twitter"
-    else
-            
-      redirect_to "http://twitter.com/?status=#{title}"
-    end
-    
-    
-  end
+  end  
 end

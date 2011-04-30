@@ -116,10 +116,17 @@
 		<%= link_to "Claim It", '#container', {:id => 'claim_it', :style=>"text-decoration:none;"}%><br><br>
 		<%= link_to "Email to friend", email_to_friend_claim_main_path(:id=>@claim_main.id),{:style=>"text-decoration:none;"}%><br><br>
 		<%= link_to "Share on Facebook", send_to_facebook_claim_main_path(:id => @claim_main.id, :uid=> params['uid'], :name => @claim_main.lastname.strip + ' ' + @claim_main.firstname.strip), {:style=>"text-decoration:none;"}%><br><br>
-		<%= link_to "Share on Twitter", send_to_twitter_claim_main_path(:id => @claim_main.id, :screen_name=> params['screen_name'], :name => @claim_main.lastname.strip + ' ' + @claim_main.firstname.strip), {:style=>"text-decoration:none;"}%>
+		<div class="twitter-link">			
+			<% if current_user %>
+				<% twitter_share = ClaimMain.twitter_share({:id => params[:id], :screen_name => params[:screen_name], :tracker_user_id => current_user.id, :name => @claim_main.lastname.strip + ' ' + @claim_main.firstname.strip})%>
+				<a href="http://twitter.com/share" class="twitter-share-button" data-text="<%= twitter_share%>" data-count="none">Share on Twitter</a>
+				<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+			<% else %>
+				<%= link_to "Share on Twitter", '#twitter_link', {:id=>'twitter_link', :style=>"text-decoration:none;"}%>
+			<% end%>	
+		</div>	
 		
-		<% claim_link = claim_it_claim_main_path(:id=>@claim_main.id, :tracker_user_id => tracker_user_id)%>
-		
+		<% claim_link = claim_it_claim_main_path(:id=>@claim_main.id, :tracker_user_id => tracker_user_id, :provider => params[:provider], :uid => params[:uid], :screen_name => params[:screen_name])%>		
 	</div>	
 </div>
 <div class="clear"></div>
@@ -147,7 +154,18 @@
 					href: "<%= claim_link%>"
 				});
 			}
-		});			
+		});	
+		
+		$('a#twitter_link').click(function(e){
+			if(is_login == 'false') {
+				$.fancybox({
+					content: '<div class="fancybox-text">Please <a href="/user_sessions/new">Login</a> or <a href="/users/new">Register</a> to Claim</div>',
+					showCloseButton: false					
+				});
+			} else {
+				
+			}
+		});		
 	});
 	
 	var addthis_share = {

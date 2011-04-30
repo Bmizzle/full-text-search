@@ -55,7 +55,7 @@
 				<% for search_friend in @search_friends %>
 				<tr>				
 					<td><%= search_friend[:name]%></td>
-					<td align="center"><%= link_to "View Results", search_path(:search=>search_friend[:name], :search_type=>"normal", :commit=> "search", :provider=>search_friend[:provider], :uid=>search_friend[:uid])%></td>
+					<td align="center"><%= link_to "View Results", search_path(:search=>search_friend[:name], :search_type=>"normal", :commit=> "search", :provider=>search_friend[:provider], :uid=>search_friend[:uid], :screen_name=>search_friend[:screen_name])%></td>
 				</tr>
 				<% end%>
 			</table>

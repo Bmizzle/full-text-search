@@ -47,7 +47,6 @@ Socialstock::Application.routes.draw do
       get 'claim_it'  
       get 'email_to_friend'
       get 'send_to_facebook'
-      get 'send_to_twitter'
     end    
   end
   

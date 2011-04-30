@@ -1,21 +1,25 @@
 <div style="border:1px solid #CCDDFF;padding:10px;">
-	<div id="link">
-		<% link = "https://txcpa.cpa.state.tx.us/up/search.do?how=FriendEmail&last=#{@claim_main.lastname.strip}&first=#{@claim_main.firstname.strip}"%>
-		<%= link_to link, link, {:target => 'blank'}%>
-	</div>
-	<div style="margin-top:5px;">
-		<h4>Please follow the below instructions</h4>
-		<div class="instructions" style="min-height:100px;">
-			
+	<% if @is_right_user %>
+		<div id="link">
+			<% link = "https://txcpa.cpa.state.tx.us/up/search.do?how=FriendEmail&last=#{@claim_main.lastname.strip}&first=#{@claim_main.firstname.strip}"%>
+			<%= link_to link, link, {:target => 'blank'}%>
 		</div>
-	</div>
-	<div style="margin-top:5px;">
-		Total money user Claimed : $<%= @claim_main.dollars_remitted.to_f %>
-	</div>
-	<div style="text-align:center;">
-		<%= form_tag(claim_amount_path(:id => @claim_main.id), :remote => true) do %>
-			<%= hidden_field_tag :tracker_user_id, params[:tracker_user_id]%>
-			<%= submit_tag "Claim Amount"%>
-		<% end%>		
-	</div>
+		<div style="margin-top:5px;">
+			<h4>Please follow the below instructions</h4>
+			<div class="instructions" style="min-height:100px;">
+				
+			</div>
+		</div>
+		<div style="margin-top:5px;">
+			Total money user Claimed : $<%= @claim_main.dollars_remitted.to_f %>
+		</div>
+		<div style="text-align:center;">
+			<%= form_tag(claim_amount_path(:id => @claim_main.id), :remote => true) do %>
+				<%= hidden_field_tag :tracker_user_id, params[:tracker_user_id]%>
+				<%= submit_tag "Claim Amount"%>
+			<% end%>		
+		</div>
+    <% else %>
+			You are not right person to claim the amount.
+	<% end%>	
 </div>

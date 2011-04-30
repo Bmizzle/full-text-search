@@ -13,4 +13,24 @@ class ClaimMain < ActiveRecord::Base
     date :add_date, :update_date
   end
   
+  def self.twitter_share(val)
+    id = val[:id]
+    screen_name= val[:screen_name]
+    tracker_user_id = val[:tracker_user_id]
+    name = val[:name] 
+        
+    claim_main = ClaimMain.find(id)
+    
+    #check amount is claim or not   
+    claim_amount = ClaimAmount.where(:claim_main_id => id, :user_id => tracker_user_id).first    
+    if !claim_amount.nil?
+      @text = "I found $#{claim_main.dollars_remitted.to_f} on ClaimVille.com. Find you missing money"
+    else
+      @text = "I found $#{claim_main.dollars_remitted.to_f} on ClaimVille.com for @#{screen_name} check out" if !screen_name.nil?
+      @text = "I found $#{claim_main.dollars_remitted.to_f} on ClaimVille.com for #{name} check out" if screen_name.nil?
+    end
+    
+    @text
+  end
+  
 end

@@ -9,12 +9,13 @@
   </head>
   <body> 
   	<%= render :partial => "layouts/header", :locals => {:show_search => false} %>
-    <div id="search_container">
+    <div id="search_container">       	
       <% flash.each do |name, msg| %>
         <%= content_tag :div, msg, :id => "flash_#{name}" %>
       <% end %>
       <%= content_tag :h1, yield(:title) if show_title? %>
       <%= yield %>
     </div>
+	<%= render :partial => "layouts/footer"%> 
   </body>
 </html>
