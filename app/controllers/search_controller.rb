@@ -7,7 +7,7 @@ class SearchController < ApplicationController
     @claim_mains = []
     
     fields = []
-    @search_keywords = ''
+    @search_keywords = params[:search]
     
     escape_params = ["utf8", "search_type", "commit", "controller", "action", "search", "page"]
     
@@ -23,7 +23,7 @@ class SearchController < ApplicationController
     if params[:commit]
       search = ClaimMain.solr_search do |s|
         s.keywords(@search_keywords, {:fields => fields}) if params[:search_type] == "advance"
-        s.keywords(params[:search]) if params[:search_type] == "normal" && !params[:search].blank?
+        s.keywords(@search_keywords) if params[:search_type] == "normal" && !params[:search].blank?
         s.paginate :per_page => 10, :page => @page       
       end
       @claim_mains = search.results
