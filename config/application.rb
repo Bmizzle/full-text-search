@@ -45,7 +45,7 @@ module Socialstock
     config.action_mailer.smtp_settings = {
       :address              => "smtp.gmail.com",
       :port                 => 587,
-      :domain               => 'startupsourcing.com',
+      :domain               => 'claimville.com',
       :user_name            => 'claimville@gmail.com',
       :password             => 'One1dollar',
       :authentication       => 'plain',

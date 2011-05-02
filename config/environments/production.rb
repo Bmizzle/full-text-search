@@ -53,7 +53,7 @@ Socialstock::Application.configure do
 end
 
 WEB_SITE = "ClaimVille"
-TITLE = "ClaimVille Local - Get Your Money Back"
+TITLE = "ClaimVille - Get Your Money Back"
 
 TWITTER_CONSUMER_KEY = "dMrjUTmtaBudVQS8qGUZcA"
 TWITTER_CONSUMER_SECRET = "9KMsZXPGOSd4Qk8c557CXA7ZoLuTAYWzao5CC3GbG8M"
