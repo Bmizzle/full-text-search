@@ -48,11 +48,12 @@ Socialstock::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
   
-  config.action_mailer.default_url_options = { :host => 'empty-leaf-572.heroku.com' }
+  config.action_mailer.default_url_options = { :host => 'ClaimVille.com' }
 
 end
 
-WEB_SITE = "empty-leaf-572"
+WEB_SITE = "ClaimVille"
+TITLE = "ClaimVille Local - Get Your Money Back"
 
 TWITTER_CONSUMER_KEY = "dMrjUTmtaBudVQS8qGUZcA"
 TWITTER_CONSUMER_SECRET = "9KMsZXPGOSd4Qk8c557CXA7ZoLuTAYWzao5CC3GbG8M"
