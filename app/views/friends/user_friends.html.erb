@@ -1,4 +1,8 @@
-<% title 'Friends'%>
+<% title "Search Friends :: #{TITLE}" if params[:provider].blank?%>
+<% title "Search Friends of Facebook :: #{TITLE}" if params[:provider] == 'facebook'%>
+<% title "Search Friends of Twitter :: #{TITLE}" if params[:provider] == 'twitter'%>
+<% title "Search Friends of Gmail :: #{TITLE}" if params[:provider] == 'gmail'%>
+
 <% javascript('/javascripts/jquery.validate.js')%>
 
 <% provider = params[:provider]%>

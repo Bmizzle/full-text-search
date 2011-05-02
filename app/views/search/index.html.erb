@@ -1,4 +1,6 @@
-<% title('Search',false)%>
+<% title(TITLE, false) if params["commit"] != "search"%>
+<% title("#{@search_keywords} search results :: #{TITLE}", false) if params["commit"] == "search"%>
+
 
 <style type="text/css">
 	.search-form-before {
