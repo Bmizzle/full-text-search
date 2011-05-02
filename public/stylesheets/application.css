@@ -12,6 +12,10 @@ a {
   color: #0000FF;
 }
 
+table {
+	border-style: none;
+}
+
 .clear {
   clear: both;
   height: 0;
@@ -27,7 +31,8 @@ a {
 
 #header-logo {
 	float: left;
-	width: 200px;
+	width: 300px;
+	text-shadow: 3px 3px 3px #cccccc;
 }
 
 #header-logo a {
@@ -155,7 +160,7 @@ label.error {
 .table-header {
 	text-align: center;
 	font-weight: bold;
-	background-color: #F5CF17;
+	background-color: #cca;
 }
 
 .social_buttons {
@@ -182,10 +187,27 @@ label.error {
 }
 
 .odd {
-   background: #cca;
+   background: #CFCBBA;
+}
+
+.even {
+	background: #E4E4E4;
 }
 
 .search-results {
 	border: 0px;	
 	width: 100%;
+}
+
+.search-example {
+	font-size:10px;
+	vertical-align:top;
+	margin-left:110px;
+	color:#474747;
+	font-style:italic;
+}
+
+.details-claim {
+	border: 1px solid #767676;
+	border-width: 0;	
 }

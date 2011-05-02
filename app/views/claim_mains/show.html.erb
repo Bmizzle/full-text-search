@@ -24,7 +24,7 @@
 	<% if !@claim_amount.nil?%>
 		<div style="padding:10px;border: 1px solid #000000;margin-bottom:10px;background-color: #FCC;">This amount is already claimed.</div>
 	<% end%>	
-	<table cellpadding="3px;" cellspacing="5px;">
+	<table class="details-claim" cellpadding="5px;" border="0">
 		<tr>
 			<td class="tb-bold">Last Name </td><td>: <%= @claim_main.lastname%> </td>
 		</tr>
@@ -167,6 +167,9 @@
 			}
 		});		
 	});
+	
+	$("tr:odd").addClass("odd");
+	$("tr:even").addClass("even");
 	
 	var addthis_share = {
 		templates: { twitter: "Check out {{title}} @ {{url}} via @ClaimVille" }
