@@ -7,7 +7,7 @@ class SearchController < ApplicationController
     @claim_mains = []
     
     fields = []
-    @search_keywords = params[:search]
+    @search_keywords = (params[:search]||'')
     
     escape_params = ["utf8", "search_type", "commit", "controller", "action", "search", "page"]
     
