@@ -5,7 +5,7 @@ Rails.application.config.middleware.use OmniAuth::Builder do
     provider :twitter, TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET
     provider :linked_in, LINKEDIN_API_KEY, LINKEDIN_SECRET_KEY
     provider :open_id, OpenID::Store::Filesystem.new('/tmp') if RAILS_ENV != 'production'
-    provider :open_id, OpenID::Store::Filesystem.new('/home/deployer/current/tmp') if RAILS_ENV == 'production'
+    provider :open_id, OpenID::Store::Filesystem.new("#{RAILS_ROOT}/tmp") if RAILS_ENV == 'production'
 end
 
 #ActionController::Dispatcher.middleware do
