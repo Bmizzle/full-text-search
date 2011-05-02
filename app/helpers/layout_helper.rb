@@ -5,11 +5,16 @@
 module LayoutHelper
   def title(page_title, show_title = true)
     content_for(:title) { h(page_title.to_s) }
-    @show_title = show_title
+    @show_title, @title = show_title, page_title
   end
 
   def show_title?
     @show_title
+  end
+  
+  def title_text
+    text =  @title.split("::")
+    text = text[0].strip
   end
 
   def stylesheet(*args)
