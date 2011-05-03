@@ -10,6 +10,7 @@
 	<%= javascript_include_tag "/javascripts/fancybox/jquery.fancybox-1.3.4.pack.js", "/javascripts/fancybox/jquery.easing-1.3.pack.js", "/javascripts/fancybox/jquery.mousewheel-3.0.4.pack.js"%>
     <%= csrf_meta_tag %>
     <%= yield(:head) %>
+	<%= render :partial => "layouts/ga"%>
   </head>
   <body>  		
   	<%= render :partial => "layouts/header", :locals => {:show_search => true} %>
