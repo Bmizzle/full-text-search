@@ -22,6 +22,9 @@ Socialstock::Application.routes.draw do
       post 'resent_activation'
     end
   end
+  
+  match 'about' => 'users#about', :as => :about
+  
   resources :password_resets, :only => [:new, :create, :edit, :update]
   
   resources :friends do 

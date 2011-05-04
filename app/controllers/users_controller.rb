@@ -117,4 +117,9 @@ class UsersController < ApplicationController
     end
     
   end
+  
+  #static page
+  def about
+    render :layout => 'static'
+  end
 end
