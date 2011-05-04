@@ -113,16 +113,16 @@
 </div>
 <div style="float:right;text-align:center;font-size:2em;font-weight:bold;">	
 	<div style="position:relative;top:100px;left:-150px;">
-		<%= link_to "Claim It", '#container', {:id => 'claim_it', :style=>"text-decoration:none;"}%><br><br>
-		<%= link_to "Email to friend", email_to_friend_claim_main_path(:id=>@claim_main.id),{:style=>"text-decoration:none;"}%><br><br>
-		<%= link_to "Share on Facebook", send_to_facebook_claim_main_path(:id => @claim_main.id, :uid=> params['uid'], :name => @claim_main.lastname.strip + ' ' + @claim_main.firstname.strip), {:style=>"text-decoration:none;"}%><br><br>
+		<%= link_to "Claim It", '#container', {:id => 'claim_it', :style=>"text-decoration:none; color: #3399FF;text-shadow: 2px 2px 2px #CCCCCC;"}%><br><br>
+		<%= link_to "Email to friend", email_to_friend_claim_main_path(:id=>@claim_main.id),{:style=>"text-decoration:none;color: #3399FF;text-shadow: 2px 2px 2px #CCCCCC;"}%><br><br>
+		<%= link_to "Share on Facebook", send_to_facebook_claim_main_path(:id => @claim_main.id, :uid=> params['uid'], :name => @claim_main.lastname.strip + ' ' + @claim_main.firstname.strip), {:style=>"text-decoration:none; color: #3399FF;text-shadow: 2px 2px 2px #CCCCCC;"}%><br><br>
 		<div class="twitter-link">			
 			<% if current_user %>
 				<% twitter_share = ClaimMain.twitter_share({:id => params[:id], :screen_name => params[:screen_name], :tracker_user_id => current_user.id, :name => @claim_main.lastname.strip + ' ' + @claim_main.firstname.strip})%>
 				<a href="http://twitter.com/share" class="twitter-share-button" data-text="<%= twitter_share%>" data-count="none">Share on Twitter</a>
 				<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
 			<% else %>
-				<%= link_to "Share on Twitter", '#twitter_link', {:id=>'twitter_link', :style=>"text-decoration:none;"}%>
+				<%= link_to "Share on Twitter", '#twitter_link', {:id=>'twitter_link', :style=>"text-decoration:none; color: #3399FF;text-shadow: 2px 2px 2px #CCCCCC;"}%>
 			<% end%>	
 		</div>	
 		
