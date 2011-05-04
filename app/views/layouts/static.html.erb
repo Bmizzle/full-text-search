@@ -1,0 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title><%= content_for?(:title) ? yield(:title) : "Untitled" %></title>
+		<meta name="keywords" content="Texas Unclaimed Property , Texas Money, My Money, Get My Money, where is my money, unclaimed property" />
+		<meta name="description" content="ClaimVille - Where you search and claim your missing unclaimed money or property in Texas" />
+		<%= stylesheet_link_tag "/stylesheets/application.css" %>
+    	<%= javascript_include_tag :defaults %>
+    	<%= csrf_meta_tag %>
+    	<%= yield(:head) %>
+		<%= render :partial => "layouts/ga"%>
+	</head>
+	<body>
+		<%= render :partial => "layouts/header", :locals => {:show_search => false} %>
+    	<div id="search_container">
+    		<%= content_tag :h1, title_text if show_title? %>
+      		<%= yield %>
+		</div>
+		<%= render :partial => "layouts/footer"%> 
+	</body>
+</html>
