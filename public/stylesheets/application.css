@@ -61,6 +61,7 @@ table {
   border: solid 1px black;
   margin-top: 10px;
   background-color: #F2F2F2;
+  min-height: 500px;
 }
 
 #search_container {
@@ -68,6 +69,7 @@ table {
   margin: 0 auto;  
   padding: 20px 40px;  
   margin-top: 10px;  
+  min-height: 400px;
 }
 
 #footer {
@@ -79,10 +81,8 @@ table {
 	border-top: 1px solid #cccaaa;
 }
 
-#footer-links {
-	float: left;
-	text-align: center;
-	width: 500px;
+#footer-links {	
+	text-align: center;	
 	padding: 10px;		
 }
 
