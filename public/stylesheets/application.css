@@ -225,3 +225,12 @@ label.error {
 	border: 1px solid #767676;
 	border-width: 0;	
 }
+
+.static-para {
+	text-align: justify;
+	margin: 5px 0px 10px 0px;	
+}
+
+.static-title {
+	font-weight: bold;
+}
