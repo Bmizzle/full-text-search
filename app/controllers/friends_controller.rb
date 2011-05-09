@@ -109,9 +109,10 @@ class FriendsController < ApplicationController
   def facebook_friends
     @fb = current_user.facebook
     @fb.fetch
-    @fb_status = @fb.feed.first
     
-    FacebookStatus.delete_all(:user_id => current_user.id)
+    #@fb_status = @fb.feed.first
+    
+    #FacebookStatus.delete_all(:user_id => current_user.id)
     
 #    FacebookStatus.create({
 #      :user_id => current_user.id,
