@@ -35,5 +35,5 @@ production:
   database: full_text_search_production
   pool: 5
   username: root
-  password: startup
+  password: 
   socket: /var/run/mysqld/mysqld.sock
